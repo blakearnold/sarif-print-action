@@ -18,6 +18,18 @@ function buildMessage(result, rule) {
   return out
 }
 
+
+const lineNumerFinder = /#([0-9-]+)\)\n/;
+// extract exact line number from the descriptive message for better placement
+function extractLineNumber(msg) {
+  matched = lineNumerFinder.exec(msg);
+  if !matched || matched.length < 2 {
+    return undefined
+  }
+  return matched[1]
+
+}
+
 try {
   // `sarif_file` input defined in action metadata file
   const sarifFile = core.getInput('sarif_file');
@@ -43,7 +55,7 @@ try {
         const pl = location.physicalLocation;
         const fileName = pl.artifactLocation.uri;
         const line = pl.region.startLine;
-        const endLine = pl.region.endLine;
+        const endLine = extractLineNumber(result.message.text) || pl.region.endLine;
         // https://docs.github.com/en/actions/using-workflows/workflow-commands-for-github-actions#using-workflow-commands-to-access-toolkit-functions
         const message = buildMessage(result, rule);
         // https://github.com/actions/toolkit/tree/main/packages/core#annotations
