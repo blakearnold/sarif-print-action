@@ -15,11 +15,11 @@ try {
   // https://github.com/microsoft/sarif-tutorials/blob/main/samples/1-Introduction/simple-example.sarif
   for (const run of sarifData.runs) {
     for (const result of run.results) {
-      console.log(util.inspect(result));
-      const message = encodeURIComponent(result.message.markdown);
+      //console.log(util.inspect(result));
+      const message = result.message.markdown.replace("\n", "%0A");
       const level = result.level;
       for (const location of result.locations) {
-        console.log(util.inspect(location));
+       // console.log(util.inspect(location));
         const pl = location.physicalLocation;
         const fileName = pl.artifactLocation.uri;
         const line = pl.region.startLine;
