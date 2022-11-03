@@ -16,7 +16,7 @@ try {
   for (const run of sarifData.runs) {
     for (const result of run.results) {
       console.log(util.inspect(result))
-      const message = result.message.text
+      const message = result.message.markdown.split(/\n/)[0]
       const level = result.level
       for (const location of result.locations) {
         console.log(util.inspect(location))
