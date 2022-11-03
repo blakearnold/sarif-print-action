@@ -65,7 +65,7 @@ try {
 
   }
 
-  if (highSevFound && failOnFailure) {
+  if (highSevFound && failOnFailure == "true") {
     core.setFailed("high severity issue found")
   }
 } catch (error) {
