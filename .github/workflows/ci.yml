@@ -1,0 +1,28 @@
+name: "CI"
+
+on:
+  pull_request:
+    branches:
+      - "master"
+  push:
+    branches:
+      - "master"
+
+jobs:
+  ci:
+    runs-on: "ubuntu-latest"
+    permissions:
+      contents: read
+    steps:
+      - name: "Check out the repo"
+        uses: "actions/checkout@v3"
+
+      - name: Annotate from SARIF file
+        uses: "./"
+        with:
+          sarif_file: "example.sarif"
+
+      - name: "Add Slither summary"
+        run: |
+          echo "## Slither results" >> $GITHUB_STEP_SUMMARY
+          echo "✅ Passed" >> $GITHUB_STEP_SUMMARY
