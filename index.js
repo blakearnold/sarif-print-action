@@ -28,8 +28,8 @@ function extractLineNumber(msg) {
   }
   // for "49-61" return 61, for "49" return 49
   const match = matches[1];
-  const split = match.split('-')
-  return split[1] || split[0]
+  const split = match.split('-');
+  return split[1] || split[0];
 }
 
 try {
