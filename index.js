@@ -2,7 +2,7 @@ const core = require('@actions/core');
 const github = require('@actions/github');
 const fs = require('fs');
 
-const util = require('util')
+const util = require('util');
 
 try {
   // `sarif_file` input defined in action metadata file
@@ -15,18 +15,19 @@ try {
   // https://github.com/microsoft/sarif-tutorials/blob/main/samples/1-Introduction/simple-example.sarif
   for (const run of sarifData.runs) {
     for (const result of run.results) {
-      console.log(util.inspect(result))
-      const message = result.message.markdown.split(/\n/)[0]
-      const level = result.level
+      console.log(util.inspect(result));
+      const message = encodeURIComponent(result.message.markdown);
+      const level = result.level;
       for (const location of result.locations) {
-        console.log(util.inspect(location))
-        const pl = location.physicalLocation
-        const fileName = pl.artifactLocation.uri
-        const line = pl.region.startLine
+        console.log(util.inspect(location));
+        const pl = location.physicalLocation;
+        const fileName = pl.artifactLocation.uri;
+        const line = pl.region.startLine;
+        const endLine = pl.region.endLine;
         // https://docs.github.com/en/actions/using-workflows/workflow-commands-for-github-actions#using-workflow-commands-to-access-toolkit-functions
 
         // https://github.com/actions/toolkit/tree/main/packages/core#annotations
-        core.warning(message, {file: fileName, startLine: line})
+        core.warning(message, {file: fileName, startLine: line, endLine: endLine});
       }
     }
 
