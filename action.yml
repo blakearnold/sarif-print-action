@@ -2,7 +2,7 @@ name: 'Code Scanning : Print SARIF'
 description: 'Print SARIF file for annotations'
 author: 'Blake Arnold'
 
-// copied from https://github.com/github/codeql-action/blob/main/upload-sarif/action.yml
+# copied from https://github.com/github/codeql-action/blob/main/upload-sarif/action.yml
 inputs:
   sarif_file:
     description: |
