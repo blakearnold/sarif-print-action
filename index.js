@@ -47,13 +47,13 @@ try {
         const securitySeverity = parseFloat(rule.properties['security-severity'])
         if (securitySeverity >= 8) {
           core.error(message, annotation);
-          console.log("error" + message + util.inspect(annotation));
+          console.log("error " + message + " " + util.inspect(annotation));
         } else if (securitySeverity >= 4) {
           core.warning(message, annotation);
-          console.log("waring"+ message  + util.inspect(annotation));
+          console.log("waring "+ message + " " + util.inspect(annotation));
         } else {
           core.notice(message, annotation);
-          console.log("notice"+ message  + util.inspect(annotation));
+          console.log("notice "+ message  + " " + util.inspect(annotation));
         }
       }
     }
