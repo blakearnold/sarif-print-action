@@ -41,9 +41,16 @@ try {
         const line = pl.region.startLine;
         const endLine = pl.region.endLine;
         // https://docs.github.com/en/actions/using-workflows/workflow-commands-for-github-actions#using-workflow-commands-to-access-toolkit-functions
-
+        const message = buildMessage(result, rule)
         // https://github.com/actions/toolkit/tree/main/packages/core#annotations
-        core.warning(buildMessage(result, rule), {title: rule.shortDescription.text, file: fileName, startLine: line, endLine: endLine});
+        const annotation = {title: rule.shortDescription.text, file: fileName, startLine: line, endLine: endLine}
+        if (rule.properties['security-severity'] == "8.0") {
+          core.error(message, annotation);
+        } else if (rule.properties['security-severity'] == "4.0") {
+          core.warning(message, annotation);
+        } else {
+          core.notice(message, annotation);
+        }
       }
     }
 
