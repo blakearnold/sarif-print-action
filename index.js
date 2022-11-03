@@ -29,10 +29,10 @@ try {
     const rulesMap = new Map();
     for (const rule of run.tool.driver.rules) {
       rulesMap.set(rule.id, rule)
+      console.log(util.inspect(rule));
     }
     for (const result of run.results) {
       rule = rulesMap.get(result.ruleId)
-      //console.log(util.inspect(result));
       const level = result.level;
       for (const location of result.locations) {
        // console.log(util.inspect(location));
