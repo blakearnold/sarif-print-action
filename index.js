@@ -16,7 +16,7 @@ try {
   for (const run of sarifData.runs) {
     for (const result of run.results) {
       //console.log(util.inspect(result));
-      const message = result.message.markdown.replace("\n", "%0A");
+      const message = result.message.markdown.replaceAll("\n", "%0A");
       const level = result.level;
       for (const location of result.locations) {
        // console.log(util.inspect(location));
