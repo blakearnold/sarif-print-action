@@ -21,7 +21,7 @@ try {
       for (const location of result.locations) {
         console.log(util.inspect(location))
         const pl = location.physicalLocation
-        const fileName = pl.artifactLocation.url
+        const fileName = pl.artifactLocation.uri
         const line = pl.region.startLine
         // https://docs.github.com/en/actions/using-workflows/workflow-commands-for-github-actions#using-workflow-commands-to-access-toolkit-functions
 
