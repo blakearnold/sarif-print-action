@@ -4,6 +4,17 @@ const fs = require('fs');
 
 const util = require('util');
 
+function buildMessage(result, rule) {
+  out = ""
+  out += rule.shortDescription.text
+  out += "\n"
+  out += rule.help.text
+  out += "\n"
+  out += "precision: " + rule.properties.precision
+  out += "\n"
+  out += "security-severity: " + rule.properties.security-severity
+}
+
 try {
   // `sarif_file` input defined in action metadata file
   const sarifFile = core.getInput('sarif_file');
@@ -12,11 +23,16 @@ try {
   const rawdata = fs.readFileSync(sarifFile);
   const sarifData = JSON.parse(rawdata);
   console.log(sarifData);
+
   // https://github.com/microsoft/sarif-tutorials/blob/main/samples/1-Introduction/simple-example.sarif
   for (const run of sarifData.runs) {
+    const rulesMap = new Map();
+    for (const rule of run.tool.driver.rules) {
+      rulesMap.set(rule.id, rule)
+    }
     for (const result of run.results) {
+      rule = rulesMap.get(result.ruleId)
       //console.log(util.inspect(result));
-      const message = result.message.markdown.replaceAll("\n", "%0A");
       const level = result.level;
       for (const location of result.locations) {
        // console.log(util.inspect(location));
@@ -27,7 +43,7 @@ try {
         // https://docs.github.com/en/actions/using-workflows/workflow-commands-for-github-actions#using-workflow-commands-to-access-toolkit-functions
 
         // https://github.com/actions/toolkit/tree/main/packages/core#annotations
-        core.warning(message, {file: fileName, startLine: line, endLine: endLine});
+        core.warning(buildMessage(result, rule), {title: rule.shortDescription.text, file: fileName, startLine: line, endLine: endLine});
       }
     }
 
