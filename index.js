@@ -13,6 +13,7 @@ function buildMessage(result, rule) {
   out += 'precision: ' + rule.properties.precision
   out += '\n'
   out += 'security-severity: ' + rule.properties['security-severity']
+  return out
 }
 
 try {
@@ -29,13 +30,12 @@ try {
     const rulesMap = new Map();
     for (const rule of run.tool.driver.rules) {
       rulesMap.set(rule.id, rule)
-      console.log(util.inspect(rule));
+      //console.log(util.inspect(rule));
     }
     for (const result of run.results) {
       rule = rulesMap.get(result.ruleId)
       const level = result.level;
       for (const location of result.locations) {
-       // console.log(util.inspect(location));
         const pl = location.physicalLocation;
         const fileName = pl.artifactLocation.uri;
         const line = pl.region.startLine;
@@ -47,10 +47,13 @@ try {
         const securitySeverity = parseFloat(rule.properties['security-severity'])
         if (securitySeverity >= 8) {
           core.error(message, annotation);
+          //console.log("error " + message + " " + util.inspect(annotation));
         } else if (securitySeverity >= 4) {
           core.warning(message, annotation);
+          //console.log("waring "+ message + " " + util.inspect(annotation));
         } else {
           core.notice(message, annotation);
+          //console.log("notice "+ message  + " " + util.inspect(annotation));
         }
       }
     }
