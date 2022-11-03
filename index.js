@@ -2,6 +2,7 @@ const core = require('@actions/core');
 const github = require('@actions/github');
 const fs = require('fs');
 
+const util = require('util')
 
 try {
   // `sarif_file` input defined in action metadata file
@@ -17,6 +18,7 @@ try {
       const message = result.message.text
       const level = result.level
       for (const location of result.locations) {
+        console.log(util.inspect(location))
         const pl = location.physicalLocation
         const fileName = pl.artifactLocation.url
         const line = pl.region.startLine
