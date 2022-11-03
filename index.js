@@ -5,17 +5,32 @@ const fs = require('fs');
 const util = require('util');
 
 function buildMessage(result, rule) {
-  out = ''
-  out += rule.shortDescription.text
-  out += '\n'
-  out += rule.help.text
-  out += '\n'
-  out += 'precision: ' + rule.properties.precision
-  out += '\n'
-  out += 'security-severity: ' + rule.properties['security-severity']
-  out += '\n\n'
-  out += result.message.text.replaceAll("\t", "  ")
-  return out
+  out = '';
+  out += rule.shortDescription.text;
+  out += '\n';
+  out += rule.help.text;
+  out += '\n';
+  out += 'precision: ' + rule.properties.precision;
+  out += '\n';
+  out += 'security-severity: ' + rule.properties['security-severity'];
+  out += '\n\n';
+  out += result.message.text.replaceAll("\t", "  ");
+  return out;
+}
+
+
+const lineNumerFinder = /#([0-9-]+)\)\n/;
+// extract exact line number from the descriptive message for better placement
+function extractLineNumber(msg) {
+  const matches = lineNumerFinder.exec(msg);
+  if (!matches || matches.length < 2) {
+    return undefined;
+  }
+  const match = matches[1];
+  if (match.includes('-')) {
+    return undefined;
+  }
+  return match;
 }
 
 try {
@@ -43,7 +58,7 @@ try {
         const pl = location.physicalLocation;
         const fileName = pl.artifactLocation.uri;
         const line = pl.region.startLine;
-        const endLine = pl.region.endLine;
+        const endLine = extractLineNumber(result.message.text) || pl.region.endLine;
         // https://docs.github.com/en/actions/using-workflows/workflow-commands-for-github-actions#using-workflow-commands-to-access-toolkit-functions
         const message = buildMessage(result, rule);
         // https://github.com/actions/toolkit/tree/main/packages/core#annotations
