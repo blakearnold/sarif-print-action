@@ -5,14 +5,14 @@ const fs = require('fs');
 const util = require('util');
 
 function buildMessage(result, rule) {
-  out = ""
+  out = ''
   out += rule.shortDescription.text
-  out += "\n"
+  out += '\n'
   out += rule.help.text
-  out += "\n"
-  out += "precision: " + rule.properties.precision
-  out += "\n"
-  out += "security-severity: " + rule.properties["security-severity"]
+  out += '\n'
+  out += 'precision: ' + rule.properties.precision
+  out += '\n'
+  out += 'security-severity: ' + rule.properties['security-severity']
 }
 
 try {
