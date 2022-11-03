@@ -12,7 +12,7 @@ function buildMessage(result, rule) {
   out += "\n"
   out += "precision: " + rule.properties.precision
   out += "\n"
-  out += "security-severity: " + rule.properties.security-severity
+  out += "security-severity: " + rule.properties["security-severity"]
 }
 
 try {
