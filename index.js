@@ -27,7 +27,7 @@ function extractLineNumber(msg) {
     return undefined;
   }
   const match = matches[1];
-  if (match.contains('-')) {
+  if (match.includes('-')) {
     return undefined;
   }
   return match;
