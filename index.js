@@ -5,17 +5,17 @@ const fs = require('fs');
 const util = require('util');
 
 function buildMessage(result, rule) {
-  out = ''
-  out += rule.shortDescription.text
-  out += '\n'
-  out += rule.help.text
-  out += '\n'
-  out += 'precision: ' + rule.properties.precision
-  out += '\n'
-  out += 'security-severity: ' + rule.properties['security-severity']
-  out += '\n\n'
-  out += result.message.text.replaceAll("\t", "  ")
-  return out
+  out = '';
+  out += rule.shortDescription.text;
+  out += '\n';
+  out += rule.help.text;
+  out += '\n';
+  out += 'precision: ' + rule.properties.precision;
+  out += '\n';
+  out += 'security-severity: ' + rule.properties['security-severity'];
+  out += '\n\n';
+  out += result.message.text.replaceAll("\t", "  ");
+  return out;
 }
 
 
@@ -26,10 +26,11 @@ function extractLineNumber(msg) {
   if (!matches || matches.length < 2) {
     return undefined;
   }
-  // for "49-61" return 61, for "49" return 49
   const match = matches[1];
-  const split = match.split('-');
-  return split[1] || split[0];
+  if (match.contains('-')) {
+    return undefined;
+  }
+  return match;
 }
 
 try {
