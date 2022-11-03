@@ -22,12 +22,14 @@ function buildMessage(result, rule) {
 const lineNumerFinder = /#([0-9-]+)\)\n/;
 // extract exact line number from the descriptive message for better placement
 function extractLineNumber(msg) {
-  matched = lineNumerFinder.exec(msg);
-  if (!matched || matched.length < 2) {
+  const matches = lineNumerFinder.exec(msg);
+  if (!matches || matches.length < 2) {
     return undefined;
   }
-  return matched[1];
-
+  // for "49-61" return 61, for "49" return 49
+  const match = matches[1];
+  const split = match.split('-')
+  return split[1] || split[0]
 }
 
 try {
