@@ -44,9 +44,10 @@ try {
         const message = buildMessage(result, rule)
         // https://github.com/actions/toolkit/tree/main/packages/core#annotations
         const annotation = {title: rule.shortDescription.text, file: fileName, startLine: line, endLine: endLine}
-        if (rule.properties['security-severity'] == "8.0") {
+        const securitySeverity = parseFloat(rule.properties['security-severity'])
+        if (securitySeverity >= 8) {
           core.error(message, annotation);
-        } else if (rule.properties['security-severity'] == "4.0") {
+        } else if (securitySeverity >= 4) {
           core.warning(message, annotation);
         } else {
           core.notice(message, annotation);
