@@ -13,6 +13,8 @@ function buildMessage(result, rule) {
   out += 'precision: ' + rule.properties.precision
   out += '\n'
   out += 'security-severity: ' + rule.properties['security-severity']
+  out += '\n\n'
+  out += result.message.text.replaceAll("\t", "  ")
   return out
 }
 
