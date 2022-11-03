@@ -21,7 +21,6 @@ jobs:
         uses: "./"
         with:
           sarif_file: "example.sarif"
-
       - name: "Add Slither summary"
         run: |
           echo "## Slither results" >> $GITHUB_STEP_SUMMARY
