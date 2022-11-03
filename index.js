@@ -21,7 +21,7 @@ try {
         const fileName = pl.artifactLocation.url
         const line = pl.region.startLine
         // https://docs.github.com/en/actions/using-workflows/workflow-commands-for-github-actions#using-workflow-commands-to-access-toolkit-functions
-        core.warn(message, {file: fileName, startLine: line})
+        core.notice(message, {file: fileName, startLine: line})
       }
     }
 
