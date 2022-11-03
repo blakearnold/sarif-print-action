@@ -35,7 +35,6 @@ try {
       rule = rulesMap.get(result.ruleId)
       const level = result.level;
       for (const location of result.locations) {
-       // console.log(util.inspect(location));
         const pl = location.physicalLocation;
         const fileName = pl.artifactLocation.uri;
         const line = pl.region.startLine;
@@ -47,10 +46,13 @@ try {
         const securitySeverity = parseFloat(rule.properties['security-severity'])
         if (securitySeverity >= 8) {
           core.error(message, annotation);
+          console.log("error" + util.inspect(annotation));
         } else if (securitySeverity >= 4) {
           core.warning(message, annotation);
+          console.log("waring" + util.inspect(annotation));
         } else {
           core.notice(message, annotation);
+          console.log("notice" + util.inspect(annotation));
         }
       }
     }
