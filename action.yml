@@ -28,8 +28,8 @@ inputs:
   category:
     description: String used by Code Scanning for matching the analyses
     required: false
-  wait-for-processing:
-    description: If true, the Action will wait for the uploaded SARIF to be processed before completing.
+  fail-on-error:
+    description: If true, the Action will fail workflow if a high-severity is found
     required: true
     default: "true"
 outputs:

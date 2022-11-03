@@ -21,21 +21,23 @@ function buildMessage(result, rule) {
 try {
   // `sarif_file` input defined in action metadata file
   const sarifFile = core.getInput('sarif_file');
+  const failOnFailure = core.getInput('fail-on-error');
   console.log(`Hello ${sarifFile}!`);
 
   const rawdata = fs.readFileSync(sarifFile);
   const sarifData = JSON.parse(rawdata);
   console.log(sarifData);
 
+  const highSevFound = false;
   // https://github.com/microsoft/sarif-tutorials/blob/main/samples/1-Introduction/simple-example.sarif
   for (const run of sarifData.runs) {
     const rulesMap = new Map();
     for (const rule of run.tool.driver.rules) {
-      rulesMap.set(rule.id, rule)
+      rulesMap.set(rule.id, rule);
       //console.log(util.inspect(rule));
     }
     for (const result of run.results) {
-      rule = rulesMap.get(result.ruleId)
+      rule = rulesMap.get(result.ruleId);
       const level = result.level;
       for (const location of result.locations) {
         const pl = location.physicalLocation;
@@ -43,12 +45,13 @@ try {
         const line = pl.region.startLine;
         const endLine = pl.region.endLine;
         // https://docs.github.com/en/actions/using-workflows/workflow-commands-for-github-actions#using-workflow-commands-to-access-toolkit-functions
-        const message = buildMessage(result, rule)
+        const message = buildMessage(result, rule);
         // https://github.com/actions/toolkit/tree/main/packages/core#annotations
-        const annotation = {title: rule.shortDescription.text, file: fileName, startLine: line, endLine: endLine}
-        const securitySeverity = parseFloat(rule.properties['security-severity'])
+        const annotation = {title: rule.shortDescription.text, file: fileName, startLine: line, endLine: endLine};
+        const securitySeverity = parseFloat(rule.properties['security-severity']);
         if (securitySeverity >= 8) {
           core.error(message, annotation);
+          highSevFound = true
           //console.log("error " + message + " " + util.inspect(annotation));
         } else if (securitySeverity >= 4) {
           core.warning(message, annotation);
@@ -60,6 +63,10 @@ try {
       }
     }
 
+  }
+
+  if (highSevFound && failOnFailure) {
+    core.setFailed("high severity issue found")
   }
 } catch (error) {
   core.setFailed(error.message);
