@@ -15,6 +15,7 @@ try {
   // https://github.com/microsoft/sarif-tutorials/blob/main/samples/1-Introduction/simple-example.sarif
   for (const run of sarifData.runs) {
     for (const result of run.results) {
+      console.log(util.inspect(result))
       const message = result.message.text
       const level = result.level
       for (const location of result.locations) {
