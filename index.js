@@ -23,10 +23,10 @@ const lineNumerFinder = /#([0-9-]+)\)\n/;
 // extract exact line number from the descriptive message for better placement
 function extractLineNumber(msg) {
   matched = lineNumerFinder.exec(msg);
-  if !matched || matched.length < 2 {
-    return undefined
+  if (!matched || matched.length < 2) {
+    return undefined;
   }
-  return matched[1]
+  return matched[1];
 
 }
 
