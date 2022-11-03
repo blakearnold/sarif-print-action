@@ -28,7 +28,7 @@ try {
   const sarifData = JSON.parse(rawdata);
   console.log(sarifData);
 
-  const highSevFound = false;
+  var highSevFound = false;
   // https://github.com/microsoft/sarif-tutorials/blob/main/samples/1-Introduction/simple-example.sarif
   for (const run of sarifData.runs) {
     const rulesMap = new Map();
